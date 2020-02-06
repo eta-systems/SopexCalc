@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Sopex - Calculator</title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="assets/w3.css">
+    <link rel="stylesheet" href="assets/katex/katex.min.css">
+    
+    <script src="assets/katex/katex.min.js"></script>
+
+</head>
+
+
+<body onload="applyPreset()">
+
+	<div id="calcApp">
+		<h5>Select the resistor value precision.</h5>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><input type="radio" name="eSeriesSelect" value="0" onclick="eSeriesHandler(this);"></td>
+					<td><span>Exact Value</span></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="eSeriesSelect" value="12" onclick="eSeriesHandler(this);"></td>
+					<td><span>E12 Series</span></td>
+				</tr>
+				<tr>
+					<td><input type="radio" name="eSeriesSelect" value="24" onclick="eSeriesHandler(this);"></td>
+					<td><span>E24 Series</span></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+		<h2>LT3652 Resistor Calculator</h2>
+		<p>This tool calculates the programming resistors for the <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/3652fe.pdf">LT3652 Power Tracking 2A Battery Charger</a>. Chose a battery preset from below or adjust the parameters yourself.</p>
+
+
+		<h3>Battery Presets</h3>
+		<p>Select a battery:</p>
+
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td>
+						<select class="w3-sand" id="batteryPresets">
+							<option>None</option>
+							<option>Lead-Acid VLRA 12V (LC-R127R2P)</option>
+							<option>Li-Ion Generic (7.2V)</option>
+							<option>Li-Ion 18650 2x 3.7V (7.4V)</option>
+						</select>
+					</td>
+					<td>
+						<button id="btnPreset" class="">Apply</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3>Battery Float Voltage Programming</h3>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textVbatflt"></span></td>
+					<td><input type="text" id="vBatFlt" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitVbatFlt"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textIfb"></span></td>
+					<td><input type="text" id="Ifb" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitMicroAmps1"></span><br/></td>
+				</tr>
+				<tr>
+					<td><span id="textRfb1"></span></td>
+					<td><span id="valueRfb1"></span></td>
+					<td><span id="unitRfb1"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRfb2"></span></td>
+					<td><span id="valueRfb2"></span></td>
+					<td><span id="unitRfb2"></span></td>
+				</tr>
+			<!--
+				<tr>
+					<td><span id="textRfb3"></span></td>
+					<td><span id="valueRfb3"></span></td>
+					<td><span id="unitOhm3"></span></td>
+				</tr>
+			-->
+				<tr>
+					<td></td>
+					<td><button id="btnRfb" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("V_{BAT(FLT)}=", textVbatflt);
+			katex.render("V", unitVbatFlt);
+			katex.render("I_{FB}=", textIfb);
+			katex.render("\\mu A", unitMicroAmps1);
+			katex.render("R_{FB_1}=",  textRfb1);
+			katex.render("R_{FB_2}=",  textRfb2);
+			// katex.render("R_{10}=R_{FB_3}=", textRfb3);
+		</script>
+
+		<h3>Sense Resistor Programming</h3>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textIchg"></span></td>
+					<td><input type="text" id="iChg" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitAmps1"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRsens"></span></td>
+					<td><span id="valueRsens"></span></td>
+					<td><span id="unitOhmSens"></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button id="btnSens" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("I_{CHG(MAX)}=", textIchg);
+			katex.render("R_{SENSE}=", textRsens);
+			katex.render("A", unitAmps1);
+		</script>
+
+		<h3>Input Supply Voltage Regulation</h3>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textVin"></span></td>
+					<td><input type="text" id="vInMin" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitVolt2"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRin1"></span></td>
+					<td><span id="valueRin1"></span></td>
+					<td><span id="unitOhmRin1"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRin2"></span></td>
+					<td><span id="valueRin2"></span></td>
+					<td><span id="unitOhmRin2"></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button id="btnVin" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("V_{IN(MIN)}=", textVin);
+			katex.render("V", unitVolt2);
+			katex.render("R_{IN1}=", textRin1);
+			katex.render("R_{IN2}=", textRin2);
+		</script>
+
+		<!--------------------------------------------------------->
+		<h2>TPS54331 Resistor Calculator</h2>
+		<p>This tool calculates the programming resistors for the <a href="https://www.ti.com/lit/ds/symlink/tps54331.pdf">TPS54331 3-A, 28-V Input, Step Down DC-DC Converter</a>. Chose a battery preset from below or adjust the parameters yourself.</p>
+
+		<h3>Input Supply Voltage Regulation</h3>
+		<p>Adjustable Input Undervoltage Lockout</p>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textVstart"></span></td>
+					<td><input type="text" id="vInStart" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitVoltStart"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textVstop"></span></td>
+					<td><input type="text" id="vInStop" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitVoltStop"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRen1"></span></td>
+					<td><span id="valueRen1"></span></td>
+					<td><span id="unitOhmRen1"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRen2"></span></td>
+					<td><span id="valueRen2"></span></td>
+					<td><span id="unitOhmRen2"></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button id="btnVlockout" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("V_{START}=", textVstart);
+			katex.render("V_{STOP}=", textVstop);
+			katex.render("V", unitVoltStart);
+			katex.render("V", unitVoltStop);
+			katex.render("R_{en_1}=", textRen1);
+			katex.render("R_{en_2}=", textRen2);
+		</script>
+
+		<h3>Current-Mode Compensation Design</h3>
+		<p></p>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+
+		</script>
+
+		<h3>Output Voltage Set Point</h3>
+		<p>The output voltage of the TPS54331 device is externally adjustable using a resistor divider network.</p>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textVout"></span></td>
+					<td><input type="text" id="vOut" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitVout"></span></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("V_{OUT}=", textVout);
+			katex.render("V", unitVout);
+		</script>
+
+	</div>
+
+</body>
+	
+<script src="assets/sopexcalc.js"></script>
+
+</html>
