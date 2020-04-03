@@ -6,8 +6,9 @@ Resistor Calculator for TPS54331 and LT3652 written in Javascript
 
 ### Datasheets
 
-[TPS54331](https://www.ti.com/lit/ds/symlink/tps54331.pdf)
-[LT3652](https://www.analog.com/media/en/technical-documentation/data-sheets/3652fe.pdf)
+- [TPS54331](https://www.ti.com/lit/ds/symlink/tps54331.pdf)
+- [LT3652](https://www.analog.com/media/en/technical-documentation/data-sheets/3652fe.pdf)
+- [NCP380](https://www.onsemi.com/pub/Collateral/NCP380-D.PDF)
 
 
 ### Project Files
@@ -16,6 +17,9 @@ Resistor Calculator for TPS54331 and LT3652 written in Javascript
 sopexcalc.js
 index.html
 ```
+
+Documentation as comments in code.
+
 
 #### Folder Structure on Webserver
 

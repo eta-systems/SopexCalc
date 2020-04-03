@@ -22,7 +22,7 @@
 			<thead></thead>
 			<tbody>
 				<tr>
-					<td><input type="radio" name="eSeriesSelect" value="0" onclick="eSeriesHandler(this);"></td>
+					<td><input type="radio" name="eSeriesSelect" value="0" onclick="eSeriesHandler(this);" checked="ture"></td>
 					<td><span>Exact Value</span></td>
 				</tr>
 				<tr>
@@ -35,6 +35,8 @@
 				</tr>
 			</tbody>
 		</table>
+
+		<hr/>
 
 
 		<h2>LT3652 Resistor Calculator</h2>
@@ -49,7 +51,7 @@
 			<tbody>
 				<tr>
 					<td>
-						<select class="w3-sand" id="batteryPresets">
+						<select class="" id="batteryPresets">
 							<option>None</option>
 							<option>Lead-Acid VLRA 12V (LC-R127R2P)</option>
 							<option>Li-Ion Generic (7.2V)</option>
@@ -87,13 +89,11 @@
 					<td><span id="valueRfb2"></span></td>
 					<td><span id="unitRfb2"></span></td>
 				</tr>
-			<!--
 				<tr>
 					<td><span id="textRfb3"></span></td>
 					<td><span id="valueRfb3"></span></td>
-					<td><span id="unitOhm3"></span></td>
+					<td><span id="unitRfb3"></span></td>
 				</tr>
-			-->
 				<tr>
 					<td></td>
 					<td><button id="btnRfb" class="w3-button w3-grey">Calculate</button></td>
@@ -106,9 +106,9 @@
 			katex.render("V", unitVbatFlt);
 			katex.render("I_{FB}=", textIfb);
 			katex.render("\\mu A", unitMicroAmps1);
-			katex.render("R_{FB_1}=",  textRfb1);
-			katex.render("R_{FB_2}=",  textRfb2);
-			// katex.render("R_{10}=R_{FB_3}=", textRfb3);
+			katex.render("R_{7}=R_{FB_1}=",  textRfb1);
+			katex.render("R_{8}=R_{FB_2}=",  textRfb2);
+			katex.render("R_{10}=R_{FB_3}=", textRfb3);
 		</script>
 
 		<h3>Sense Resistor Programming</h3>
@@ -134,7 +134,7 @@
 		</table>
 		<script type="text/javascript">
 			katex.render("I_{CHG(MAX)}=", textIchg);
-			katex.render("R_{SENSE}=", textRsens);
+			katex.render("R_9=R_{SENSE}=", textRsens);
 			katex.render("A", unitAmps1);
 		</script>
 
@@ -167,10 +167,11 @@
 		<script type="text/javascript">
 			katex.render("V_{IN(MIN)}=", textVin);
 			katex.render("V", unitVolt2);
-			katex.render("R_{IN1}=", textRin1);
-			katex.render("R_{IN2}=", textRin2);
+			katex.render("R_{3}=R_{IN1}=", textRin1);
+			katex.render("R_{5}=R_{IN2}=", textRin2);
 		</script>
 
+		<hr/>
 		<!--------------------------------------------------------->
 		<h2>TPS54331 Resistor Calculator</h2>
 		<p>This tool calculates the programming resistors for the <a href="https://www.ti.com/lit/ds/symlink/tps54331.pdf">TPS54331 3-A, 28-V Input, Step Down DC-DC Converter</a>. Chose a battery preset from below or adjust the parameters yourself.</p>
@@ -212,10 +213,11 @@
 			katex.render("V_{STOP}=", textVstop);
 			katex.render("V", unitVoltStart);
 			katex.render("V", unitVoltStop);
-			katex.render("R_{en_1}=", textRen1);
-			katex.render("R_{en_2}=", textRen2);
+			katex.render("R_{21}=R_{en_1}=", textRen1);
+			katex.render("R_{22}=R_{en_2}=", textRen2);
 		</script>
 
+		<!--
 		<h3>Current-Mode Compensation Design</h3>
 		<p></p>
 		<table>
@@ -226,8 +228,8 @@
 			</tbody>
 		</table>
 		<script type="text/javascript">
-
 		</script>
+		-->
 
 		<h3>Output Voltage Set Point</h3>
 		<p>The output voltage of the TPS54331 device is externally adjustable using a resistor divider network.</p>
@@ -239,12 +241,65 @@
 					<td><input type="text" id="vOut" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
 					<td><span id="unitVout"></span></td>
 				</tr>
+				<tr>
+					<td><span id="textR24"></span></td>
+					<td><span id="valueR24"></span></td>
+					<td><span id="unitOhmR24"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textR25"></span></td>
+					<td><span id="valueR25"></span></td>
+					<td><span id="unitOhmR25"></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button id="btnVout" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
 			</tbody>
 		</table>
 		<script type="text/javascript">
 			katex.render("V_{OUT}=", textVout);
 			katex.render("V", unitVout);
+			katex.render("R_{24}=", textR24);
+			katex.render("R_{25}=", textR25);
 		</script>
+
+		<hr/>
+		<!--------------------------------------------------------->
+		<h2>NCP380 Current Limiting</h2>
+		<p>This tool calculates the current limiting resistor of the <a href="https://www.onsemi.com/pub/Collateral/NCP380-D.PDF">NCP380 Adjustable Current‐Limiting Power‐Distribution Switch</a>.</p>
+
+		<h3>Current Limiting</h3>
+		<p>Current Limiting Resistor to set the maximum Output Current</p>
+		<table>
+			<thead></thead>
+			<tbody>
+				<tr>
+					<td><span id="textIlimt"></span></td>
+					<td><input type="text" id="iLim" class="w3-text-blue w3-border-light-grey" style="text-align: right;"></td>
+					<td><span id="unitIlim"></span></td>
+				</tr>
+				<tr>
+					<td><span id="textRlim"></span></td>
+					<td><span id="valueRlim"></span></td>
+					<td><span id="unitOhmRlim"></span></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button id="btnIlim" class="w3-button w3-grey">Calculate</button></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+		<script type="text/javascript">
+			katex.render("I_{lim}=", textIlimt);
+			katex.render("A", unitIlim);
+			katex.render("R_{32}=R_{lim}=", textRlim);
+		</script>
+
+		<hr/>
+		<!--------------------------------------------------------->
 
 	</div>
 
